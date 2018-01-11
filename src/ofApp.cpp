@@ -20,11 +20,6 @@ void ofApp::setup(){
     chair.setPosition(0,0,0);
     chair.setScaleNormalization(false);
     
-    //human_model
-//    human.loadModel("model/human/human.stl");
-//    human.setPosition(0, 0, 0);
-//    human.setScaleNormalization(false);
-    
     //gui_set
     viewButton.addListener(this, &ofApp::viewButtonPressed);
     saveButton.addListener(this, &ofApp::savePressed);
@@ -493,33 +488,4 @@ void ofApp::resetPressed(){
 }
 //--------------------------------------------------------------
 void ofApp::exit(){
-
-    
-    /*
-     xml.clear();
-     xml.addChild("points");
-     xml.setTo("points");
-     vector<ofVec3f> vec = warpF.getVertices();
-     
-     for (int i = 0; i<vec.size(); i++) {
-     xml.addChild("pointF");
-     xml.setToChild(i);
-     xml.setAttribute("xyz", ofToString(vec[i].x) + "," + ofToString(vec[i].y) + "," + ofToString(vec[i].z));
-     xml.setToParent();
-     }
-     
-     vector<ofVec3f> vecs = warpS.getVertices();
-     
-     //    for (int j = 0; j<vecs.size(); j++) {
-     //        xml.addChild("pointS");
-     //        xml.setToChild(j);
-     //        xml.setAttribute("xyz", ofToString(vecs[j].x) + "," + ofToString(vecs[j].y) + "," + ofToString(vecs[j].z));
-     //        xml.setToParent();
-     //    }
-     
-     xml.setToParent();
-     
-     xml.save("setting.xml");
-     */
-    
 }

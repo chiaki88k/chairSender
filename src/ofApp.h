@@ -44,6 +44,7 @@ public:
     int ctrP = 5;//warpControlPoints
     int frontW = 350,frontH = 350;//warpのサイズ550,halfは280
     int sideW = 350,sideH = 450;//sw550 sh780
+
     ofVec2f area0,area1,area2,area3;
     
     int dW,dH,dD;//display size
