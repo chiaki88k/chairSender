@@ -1,0 +1,5 @@
+ofxAssimpModelLoader
+ofxBezierSurface
+ofxGui
+ofxOsc
+ofxXmlSettings
