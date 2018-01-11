@@ -41,7 +41,7 @@ void ofApp::setup(){
     
     gui2.setup();
     gui2.setPosition(20, dH/16*13);
-    gui2.add(Res.setup("  Resolution",100,5,200));
+    gui2.add(Res.setup("  Resolution",res,5,200));
     gui2.add(viewButton.setup("View Button"));
     gui2.add(saveButton.setup("Save Button"));
     gui2.add(resetButton.setup("Reset Button"));
@@ -484,7 +484,7 @@ void ofApp::resetPressed(){
     side.reset();
     warpF.clear();
     warpS.clear();
-    reMapMesh();
+    mesh = chair.getCurrentAnimatedMesh(0);
 }
 //--------------------------------------------------------------
 void ofApp::exit(){

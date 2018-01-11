@@ -40,7 +40,7 @@ public:
     ofVec3f nextCam,easing;
     ofXml xml,xmlS,xmlF;
     
-    int res = 100 ;//warpMeshSize
+    int res = 50 ;//warpMeshSize
     int ctrP = 5;//warpControlPoints
     int frontW = 350,frontH = 350;//warpのサイズ550,halfは280
     int sideW = 350,sideH = 450;//sw550 sh780
