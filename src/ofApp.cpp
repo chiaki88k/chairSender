@@ -15,8 +15,8 @@ void ofApp::setup(){
     dD=dW;
     
     //chair_settting
-    chair.loadModel("model/zigzag/zigzag95_26_half.stl");
-//    chair.loadModel("model/zigzag/0110_10000.stl");//virtex10000
+//    chair.loadModel("model/zigzag/zigzag95_26_half.stl");
+    chair.loadModel("model/zigzag/0110_10000.stl");//virtex10000
     chair.setPosition(0,0,0);
     chair.setScaleNormalization(false);
     
@@ -60,7 +60,6 @@ void ofApp::setup(){
     light.lookAt(ofVec3f(0,0,0));
     light.setSpecularColor(ofFloatColor(1.0,1.0,1.0));
     light.enable();
-    
     
     //warp_set
     //warpF
@@ -238,43 +237,21 @@ void ofApp::reMapMesh(){
 
     //mesh vertices loop
     for(unsigned int i=0; i<v.size(); i+=1){
+
         //front meshX map
         for(unsigned int j=0;j<res1;j++){
-            
-            //area0 area1
-//            if(w[j].y<v[i].y && v[i].y<=w[j+1].y && v[i].x<0){
-//                v[i].x = ofMap(v[i].x, -fw, 0, w[j].x , w[j+res4].x);
-//            }
-            
-            //area2 area3
-//            if(w[j+res2].y<v[i].y && v[i].y<=w[(j+res2)+1].y && v[i].x>=0){
-//                v[i].x = ofMap(v[i].x, 0, fw, w[j+res4].x , w[j+res2].x);
-//            }
-            
             if(w[j].y<v[i].y && v[i].y<=w[j+1].y){
-                v[i].x = ofMap(v[i].x, -fw, fw, w[j].x,w[(res2)+j].x);
+                v[i].x = ofMap(v[i].x, -fw, fw, w[j].x,w[(res2)+j].x,true);
             }
-            
         }
         //front meshY map
         for(unsigned int k=0;k<res2;k+=res){
-            //area03
-                    
-            if(w[k].x<v[i].x && v[i].x<=w[k+res].x && v[i].y<w[k+res3].y){
-                v[i].y = ofMap(v[i].y, -fh, w[k+res3].y, w[k].y, w[k+res3].y);
+            if(w[k].x<v[i].x && v[i].x<=w[k+res].x){
+                v[i].y = ofMap(v[i].y, -fh, fh, w[k].y, w[k+res1].y,true);
             }
-            //area12
-            if(w[k+res1].x<v[i].x && v[i].x<=w[k+res+res1].x && v[i].y>=w[k+res3].y){
-                v[i].y = ofMap(v[i].y, w[k+res3].y, fh, w[k+res3].y, w[k+res1].y);
-            }
-            
-//            if(w[k].x<v[i].x && v[i].x<=w[k+res].x){
-//                v[i].y = ofMap(v[i].y, -fh, fh, w[k].y, w[k+res1].y);
-//            }
         }
-        
+
         for(unsigned int l=(res2);l>0;l-=res){
-            
             if(s[l].y>=v[i].y && v[i].y>s[l-res].y){
                 v[i].z = ofMap(v[i].z, 0, sideH,s[l+res1].z,s[l].z*-1);
             }
@@ -413,6 +390,12 @@ void ofApp::loadXmlS(){
     }
 }
 //--------------------------------------------------------------
+
+void ofApp::mousePressed(int x,int y,int button){
+}
+
+
+//--------------------------------------------------------------
 void ofApp::mouseReleased(int x, int y, int button){
     reMapMesh();
 }
@@ -456,7 +439,7 @@ void ofApp::resolution(int r){
     front.setup(frontW,frontH,ctrP,r,dW/3,dH/3);
     side.setup(sideW,sideH,ctrP,r,dW/3,dH/5);
     
-    glPointSize(ofMap(r, 5, 150, 5.0, 1.0));
+    glPointSize(ofMap(r, 5, 200, 5.0, 1.0));
     
     res=r;
 }
@@ -465,18 +448,19 @@ void ofApp::savePressed(){
         mesh.addColor(ofFloatColor(255,255,255));
     }
     string name = ofGetTimestampString();
+
 //    mesh.save("/Volumes/idd-design06/Desktop/chairRecieve/data/save/"+name+".ply");//受信マシンのdeskTopの絶対パス
 //    mesh.save("/Users/sakamotosenakira/Desktop/of_v0.9.8_osx_release/apps/master_03/chairRecieve/bin/data/save/"+name+".ply");//localパス
+    
     mesh.save("save/"+name+".ply");
     warpF.save("warpFront/"+name+".ply");
     warpS.save("warpSide/"+name+".ply");
     mesh.clearColors();
     
-    ofxOscMessage m;
-    m.setAddress("/save/name");
-    m.addStringArg(name);
-    
-    sender.sendMessage(m);
+//    ofxOscMessage m;
+//    m.setAddress("/save/name");
+//    m.addStringArg(name);
+//    sender.sendMessage(m);
     
 }
 void ofApp::resetPressed(){

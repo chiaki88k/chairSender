@@ -15,6 +15,7 @@ public:
     void update();
     void draw();
     void keyPressed(int key);
+    void mousePressed(int x,int y,int button);
     void mouseReleased(int x, int y, int button);
     void windowResized(int w, int h);
     void reMapMesh();
@@ -40,10 +41,10 @@ public:
     ofVec3f nextCam,easing;
     ofXml xml,xmlS,xmlF;
     
-    int res = 50 ;//warpMeshSize
+    int res = 150 ;//warpMeshSize
     int ctrP = 5;//warpControlPoints
-    int frontW = 350,frontH = 350;//warpのサイズ550,halfは280
-    int sideW = 350,sideH = 450;//sw550 sh780
+    int frontW = 500,frontH = 500;//warpのサイズ550,halfは280
+    int sideW = 500,sideH = 500;//sw550 sh780
 
     ofVec2f area0,area1,area2,area3;
     
