@@ -22,8 +22,10 @@ void ofApp::setup(){
     
     //gui_set
     viewButton.addListener(this, &ofApp::viewButtonPressed);
+    cornerLock.addListener(this, &ofApp::cornerLockXY);
     saveButton.addListener(this, &ofApp::savePressed);
     resetButton.addListener(this, &ofApp::resetPressed);
+    
     
     gui.setup();
     gui.setPosition(dW/16,dH/16*4);
@@ -43,6 +45,7 @@ void ofApp::setup(){
     gui2.setPosition(20, dH/16*13);
     gui2.add(Res.setup("  Resolution",res,5,200));
     gui2.add(viewButton.setup("View Button"));
+    gui2.add(cornerLock.setup("Corner Lock X/Y"));
     gui2.add(saveButton.setup("Save Button"));
     gui2.add(resetButton.setup("Reset Button"));
     
@@ -181,8 +184,9 @@ void ofApp::draw(){
     
     if(viewMode==0){
         front.drawControls(warpCol,warpCol);
-        front.drawWireframe(false,false);
-        
+        if(LockXY==0)front.drawWireframe(false,true,false);//(lockX,lockY,lockH)
+        if(LockXY==1)front.drawWireframe(true,false,false);//(lockX,lockY,lockH)
+
         ofSetColor(0,0,255,lineAlpha);
             ofNoFill();
                 ofSetLineWidth(1.0);
@@ -192,7 +196,7 @@ void ofApp::draw(){
         
     }else if(viewMode==1){
         side.drawControls(warpCol,warpCol);
-        side.drawWireframe(false,true);
+        side.drawWireframe(false,false,true);
         
         ofSetColor(0,0,255,lineAlpha);
             ofNoFill();
@@ -390,10 +394,8 @@ void ofApp::loadXmlS(){
     }
 }
 //--------------------------------------------------------------
-
 void ofApp::mousePressed(int x,int y,int button){
 }
-
 
 //--------------------------------------------------------------
 void ofApp::mouseReleased(int x, int y, int button){
@@ -402,6 +404,7 @@ void ofApp::mouseReleased(int x, int y, int button){
 
 //--------------------------------------------------------------
 void ofApp::windowResized(int w, int h){}
+
 //--------------------------------------------------------------
 void ofApp::viewButtonPressed(){
     viewMode+=1;
@@ -434,6 +437,18 @@ void ofApp::viewButtonPressed(){
         }break;
     }
 }
+
+//--------------------------------------------------------------
+void ofApp::cornerLockXY(){
+    LockXY+=1;
+    if(LockXY>1)LockXY=0;
+    front.reset();
+    side.reset();
+    warpF.clear();
+    warpS.clear();
+    mesh = chair.getCurrentAnimatedMesh(0);
+}
+
 //--------------------------------------------------------------
 void ofApp::resolution(int r){
     front.setup(frontW,frontH,ctrP,r,dW/3,dH/3);
@@ -442,7 +457,10 @@ void ofApp::resolution(int r){
     glPointSize(ofMap(r, 5, 200, 5.0, 1.0));
     
     res=r;
+    mesh = chair.getCurrentAnimatedMesh(0);
 }
+
+//--------------------------------------------------------------
 void ofApp::savePressed(){
     for(int i=0;i<mesh.getNumVertices();i++){
         mesh.addColor(ofFloatColor(255,255,255));
@@ -463,6 +481,8 @@ void ofApp::savePressed(){
 //    sender.sendMessage(m);
     
 }
+
+//--------------------------------------------------------------
 void ofApp::resetPressed(){
     front.reset();
     side.reset();
@@ -470,6 +490,7 @@ void ofApp::resetPressed(){
     warpS.clear();
     mesh = chair.getCurrentAnimatedMesh(0);
 }
+
 //--------------------------------------------------------------
 void ofApp::exit(){
 }

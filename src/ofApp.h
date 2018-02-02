@@ -26,6 +26,7 @@ public:
     void loadXmlS();
     void exit();
     void viewButtonPressed();
+    void cornerLockXY();
     void savePressed();
     void resetPressed();
     void resolution(int r);//解像度の変更
@@ -54,11 +55,12 @@ public:
     string info,view;
     bool showGui=false;
     bool grid=false;
+    int LockXY = 0;//0=lockX,1=lockY
     ofxPanel gui,gui2;
     ofxIntSlider lpX,lpY,lpZ,warpCol,Res,lineAlpha;
     ofxFloatSlider camX,camY,camZ;
     ofxColorSlider ambient,diffuse,bg;
-    ofxButton viewButton,saveButton,resetButton;
+    ofxButton viewButton,cornerLock,saveButton,resetButton;
     
     int rY=-90,rX=-90,time;//rotateX/rotateY
     ofColor warpC=ofColor(210);
