@@ -19,6 +19,7 @@ void ofApp::setup(){
     chairLoad("model/zig/zig.stl");
     
     //gui_set
+    howtoButton.addListener(this, &ofApp::howtoButtonPressed);
     viewButton.addListener(this, &ofApp::viewButtonPressed);
     cornerLock.addListener(this, &ofApp::cornerLockXY);
     saveButton.addListener(this, &ofApp::savePressed);
@@ -28,6 +29,8 @@ void ofApp::setup(){
     guiSetUp1();
     
     guiSetUp2();
+    
+    ht.load("image/howto.png");
     
     sender.setup(HOST, PORT);
     
@@ -129,12 +132,19 @@ void ofApp::update(){
     }
     
     pMouse.x = ofGetPreviousMouseX();
+    
+    if(howto&&alpha<256){
+        alpha*=1.2;
+    }else if(howto==0&&alpha>1){
+        alpha/=1.1;
+    }
 
 }
 
 //--------------------------------------------------------------
 void ofApp::draw(){
     ofBackground(ofColor(bg));
+ 
 
     //grid
     if(grid==1){
@@ -162,6 +172,7 @@ void ofApp::draw(){
     ofRotate(rX,0,1,0);
     ofRotate(rY,0,0,1);
 
+    ofSetColor(255,255);
     mesh.draw();
 
     glDisable(GL_LIGHTING);
@@ -207,8 +218,12 @@ void ofApp::draw(){
         gui.draw();
     }
     gui2.draw();
-
+  
     ofDrawBitmapStringHighlight(name + "\n" + view,23, dH/16*1);
+    
+    ofSetColor(255,alpha);
+    ht.draw(0,0,dW,dH);
+ 
 }
 
 void ofApp::chairLoad(string path){
@@ -279,6 +294,10 @@ void ofApp::drawInfo(){
     info+="timer"+ofToString(time)+"\n";
     info+="nextCam"+ofToString(nextCam.x)+","+ofToString(nextCam.y)+","+ofToString(nextCam.z)+"\n";
     info+="Dist"+ofToString(ofDist(camX,camY,camZ,nextCam.x,nextCam.y,nextCam.z))+"\n";
+    
+    info+="howto"+ofToString(howto)+"\n";
+    info+="alpha"+ofToString(alpha)+"\n";
+
     
     info+="area0,"+ofToString(area0.x)+","+ofToString(area0.y)+"\n";
     info+="area1,"+ofToString(area1.x)+","+ofToString(area1.y)+"\n";
@@ -397,6 +416,7 @@ void ofApp::loadXmlS(){
 }
 //--------------------------------------------------------------
 void ofApp::mousePressed(int x,int y,int button){
+    if(howto==1)howto=0;
 }
 //--------------------------------------------------------------
 void ofApp::mouseReleased(int x, int y, int button){
@@ -406,6 +426,11 @@ void ofApp::mouseReleased(int x, int y, int button){
 void ofApp::windowResized(int w, int h){}
 
 //--------------------------------------------------------------
+
+void ofApp::howtoButtonPressed(){
+    howto=!howto;
+}
+
 void ofApp::viewButtonPressed(){
     viewNum+=1;
     if(viewNum>2)viewNum=0;
@@ -512,11 +537,12 @@ void ofApp::guiSetUp1(){
 void ofApp::guiSetUp2(){
     gui2.setup();
     gui2.setPosition(20, dH/16*1.5);
-    gui2.add(modelButton.setup("Model"));
-    gui2.add(viewButton.setup("View"));
-    gui2.add(cornerLock.setup("CornerLock"));
-    gui2.add(saveButton.setup("Save"));
-    gui2.add(resetButton.setup("Reset"));
+    gui2.add(howtoButton.setup("How to operate"));
+    gui2.add(modelButton.setup("Model changing"));
+    gui2.add(viewButton.setup("Viewpoint switching"));
+    gui2.add(cornerLock.setup("Corner lock"));
+    gui2.add(saveButton.setup("Model save"));
+    gui2.add(resetButton.setup("Model reset"));
     
     //    gui2.add(Res.setup("Resolution",res,5,200));
 

@@ -26,6 +26,7 @@ public:
     void loadXmlF();
     void loadXmlS();
     void exit();
+    void howtoButtonPressed();
     void viewButtonPressed();
     void modelPressed();
     void cornerLockXY();
@@ -46,6 +47,7 @@ public:
     ofLight light;
     ofVec3f nextCam,easing;
     ofXml xml,xmlS,xmlF;
+    ofImage ht;
     
     int res = 120 ;//warpMeshSize
     int ctrP = 5;//warpControlPoints
@@ -59,17 +61,19 @@ public:
     int  viewNum = 0,modelNum = 0;
     
     float wfx,wfy,wsy,wsz;
+    float alpha=1;
     string info,view,name;
     bool showGui=false;
     bool grid=false;
     bool easingView = false;
+    bool howto = false;
     int LockXY = 0;//0=lockX,1=lockY
     float EcamX=450,EcamY=630,EcamZ=960;
     ofxPanel gui,gui2;
     ofxIntSlider lpX,lpY,lpZ,warpCol,Res,lineAlpha;
     ofxFloatSlider camX,camY,camZ;
     ofxColorSlider ambient,diffuse,bg;
-    ofxButton viewButton,cornerLock,saveButton,resetButton,modelButton;
+    ofxButton viewButton,cornerLock,saveButton,resetButton,modelButton,howtoButton;
     
     int rY=-90,rX=-90,time,ltime;//rotateX/rotateY
     ofColor warpC=ofColor(210);
