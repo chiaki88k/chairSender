@@ -1,7 +1,6 @@
 dependencies: \
   /Users/sakamotosenakira/Desktop/of_v0.9.8_osx_release/apps/master_03/chairSender/src/ofApp.cpp \
-  /Users/sakamotosenakira/Desktop/of_v0.9.8_osx_release/apps/master_03/chairSender/src/ofApp.h \
-  ../../../libs/openFrameworks/ofMain.h \
+  src/ofApp.h ../../../libs/openFrameworks/ofMain.h \
   ../../../libs/openFrameworks/utils/ofConstants.h \
   ../../../libs/glew/include/GL/glew.h \
   ../../../libs/tess2/include/tesselator.h \
@@ -561,6 +560,27 @@ dependencies: \
   ../../../addons/ofxGui/src/ofxButton.h \
   ../../../addons/ofxGui/src/ofxPanel.h \
   ../../../addons/ofxGui/src/ofxLabel.h \
+  /Users/sakamotosenakira/Desktop/of_v0.9.8_osx_release/addons/ofxDatGui/src/ofxDatGui.h \
+  /Users/sakamotosenakira/Desktop/of_v0.9.8_osx_release/apps/master_03/chairSender/../../../addons/ofxDatGui/src/components/ofxDatGuiGroups.h \
+  ../../../addons/ofxDatGui/src/components/ofxDatGuiLabel.h \
+  /Users/sakamotosenakira/Desktop/of_v0.9.8_osx_release/addons/ofxDatGui/src/core/ofxDatGuiComponent.h \
+  ../../../addons/ofxDatGui/src/core/ofxDatGuiIntObject.h \
+  /Users/sakamotosenakira/Desktop/of_v0.9.8_osx_release/apps/master_03/chairSender/../../../addons/ofxDatGui/src/themes/ofxDatGuiThemes.h \
+  ../../../addons/ofxDatGui/src/themes/ofxDatGuiTheme.h \
+  /Users/sakamotosenakira/Desktop/of_v0.9.8_osx_release/addons/ofxDatGui/src/libs/ofxSmartFont/ofxSmartFont.h \
+  ../../../addons/ofxDatGui/src/core/ofxDatGuiEvents.h \
+  ../../../addons/ofxDatGui/src/core/ofxDatGuiConstants.h \
+  ../../../addons/ofxDatGui/src/components/ofxDatGuiButton.h \
+  ../../../addons/ofxDatGui/src/components/ofxDatGuiSlider.h \
+  ../../../addons/ofxDatGui/src/components/ofxDatGuiTextInputField.h \
+  ../../../addons/ofxDatGui/src/components/ofxDatGuiTextInput.h \
+  ../../../addons/ofxDatGui/src/components/ofxDatGuiFRM.h \
+  ../../../addons/ofxDatGui/src/components/ofxDatGui2dPad.h \
+  ../../../addons/ofxDatGui/src/components/ofxDatGuiColorPicker.h \
+  ../../../addons/ofxDatGui/src/components/ofxDatGuiMatrix.h \
+  ../../../addons/ofxDatGui/src/components/ofxDatGuiTimeGraph.h \
+  ../../../addons/ofxDatGui/src/components/ofxDatGuiScrollView.h \
+  /Users/sakamotosenakira/Desktop/of_v0.9.8_osx_release/apps/master_03/chairSender/../../../addons/ofxDatGui/src/components/ofxDatGuiControls.h \
   /Users/sakamotosenakira/Desktop/of_v0.9.8_osx_release/addons/ofxAssimpModelLoader/src/ofxAssimpModelLoader.h \
   ../../../addons/ofxAssimpModelLoader/src/ofxAssimpMeshHelper.h \
   ../../../addons/ofxAssimpModelLoader/libs/assimp/include/assimp/cimport.h \

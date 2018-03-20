@@ -15,46 +15,25 @@ void ofApp::setup(){
     dD=dW;
     
     //chair_settting
-//    chair.loadModel("model/zigzag/zigzag95_26_half.stl");
-    chair.loadModel("model/zigzag/0110_10000.stl");//virtex10000
-    chair.setPosition(0,0,0);
-    chair.setScaleNormalization(false);
+
+    chairLoad("model/zig/zig.stl");
     
     //gui_set
     viewButton.addListener(this, &ofApp::viewButtonPressed);
     cornerLock.addListener(this, &ofApp::cornerLockXY);
     saveButton.addListener(this, &ofApp::savePressed);
     resetButton.addListener(this, &ofApp::resetPressed);
+    modelButton.addListener(this, &ofApp::modelPressed);
     
+    guiSetUp1();
     
-    gui.setup();
-    gui.setPosition(dW/16,dH/16*4);
-    gui.add(lpX.setup("lightPX",-780,-1500,1500));
-    gui.add(lpY.setup("lightPY",950,-1500,1500));
-    gui.add(lpZ.setup("lightPZ",1300,-1500,1500));
-    gui.add(camX.setup("camPX",0,-3000,3000));
-    gui.add(camY.setup("camPY",1830,-3000,3000));
-    gui.add(camZ.setup("camPZ",1730,-3000,3000));
-    gui.add(warpCol.setup("warp",230,0,255));
-    gui.add(lineAlpha.setup("lineAlpha",70,0,255));
-    gui.add(ambient.setup("ambient",ofColor(70,55,37,255),ofColor(0),ofColor(255)));
-    gui.add(diffuse.setup("diffuse",ofColor(221,139,41,255),ofColor(0),ofColor(255)));
-    gui.add(bg.setup("background",ofColor(253,255,255),ofColor(0,0,0),ofColor(255,255,255)));
-    
-    gui2.setup();
-    gui2.setPosition(20, dH/16*13);
-    gui2.add(Res.setup("  Resolution",res,5,200));
-    gui2.add(viewButton.setup("View Button"));
-    gui2.add(cornerLock.setup("Corner Lock X/Y"));
-    gui2.add(saveButton.setup("Save Button"));
-    gui2.add(resetButton.setup("Reset Button"));
+    guiSetUp2();
     
     sender.setup(HOST, PORT);
     
     //cam_set
     cam.setPosition(1000, 1000, 2000);
     cam.lookAt(chair.getPosition());
-    
     Ecam.setPosition(-960, 690, 930);
     Ecam.lookAt(chair.getPosition());
     
@@ -78,10 +57,10 @@ void ofApp::setup(){
         warpF.addVertex(ofVec3f(warpf[i].x-wfx,warpf[i].y-wfy,warpf[i].z));
     }
     //warpS
-    side.setup(sideW,sideH,ctrP,res,dW/3,dH/5);
+    side.setup(sideW,sideH,ctrP,res,dW/3,dH/3);
     side.addListeners(false);
     wsy = sideW/2+dW/3;
-    wsz = sideH+dH/5;
+    wsz = sideH+dH/3;
     
     warpS.setMode(OF_PRIMITIVE_POINTS);
     vector<ofVec3f> warps = side.getVertices();
@@ -93,16 +72,29 @@ void ofApp::setup(){
     saveXmlS(false);
     
     glPointSize(1.0);
+    
     reMapMesh();
+
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
-    if(viewMode==0){
+    if(viewNum==0){
         front.update();
-    }else if(viewMode==1){
+    }else if(viewNum==1){
         side.update();
     }else{
+    }
+    
+    (ofGetMouseX()==pMouse.x ? time++ : time = 0);
+    
+    if(time>500){
+        easingCam();
+    }else if((time-ltime) < 0){
+        if(view=="view Side")viewNum-=1;
+        if(view=="view Top")viewNum-=2;
+        if(view=="view Purse")viewNum=viewNum;
+        ltime=0;
     }
     
     light.setPosition(ofPoint(lpX,lpZ,lpY));
@@ -112,9 +104,9 @@ void ofApp::update(){
     cam.setPosition(camX, camY, camZ);
     cam.lookAt(ofVec3f(0));
     
-    if(res != Res){
-        resolution(Res);
-    }
+//    if(res != Res){
+//        resolution(Res);
+//    }
     
     warpF.clear();
     warpS.clear();
@@ -135,12 +127,15 @@ void ofApp::update(){
         warpS.addVertex(ofVec3f(warps[i].z,warps[i].x,warps[i].y-wsz));
         warpS.addColor(ofFloatColor(warpC));
     }
+    
+    pMouse.x = ofGetPreviousMouseX();
 
 }
 
 //--------------------------------------------------------------
 void ofApp::draw(){
     ofBackground(ofColor(bg));
+
     //grid
     if(grid==1){
         int x;
@@ -155,34 +150,34 @@ void ofApp::draw(){
     
     ofPushMatrix();
     
-    if(viewMode==0){
-        cam.begin(ofRectangle(dW/3*2, 0, dW/3*1, dH));
-    }else if(viewMode==1){
-        cam.begin(ofRectangle(dW/3*2, 0, dW/3*1, dH));
-    }else if(viewMode==2){
-        Ecam.begin();
-    }
+        if(viewNum==0){
+            cam.begin(ofRectangle(dW/3*2, 0, dW/3*1, dH));
+        }else if(viewNum==1){
+            cam.begin(ofRectangle(dW/3*2, 0, dW/3*1, dH));
+        }else if(viewNum==2){
+            Ecam.begin();
+        }
     
     ofRotate(90,0,0,1);
     ofRotate(rX,0,1,0);
     ofRotate(rY,0,0,1);
-    
+
     mesh.draw();
 
     glDisable(GL_LIGHTING);
-    
+   
     warpF.draw();
     warpS.draw();
-
     
     glDisable(GL_DEPTH_TEST);
+
+    if(viewNum==0 || viewNum==1)cam.end();
+    if(viewNum==2)Ecam.end();
     
-    if(viewMode==0 || viewMode==1)cam.end();
-    if(viewMode==2)Ecam.end();
     
     ofPopMatrix();
     
-    if(viewMode==0){
+    if(viewNum==0){
         front.drawControls(warpCol,warpCol);
         if(LockXY==0)front.drawWireframe(false,true,false);//(lockX,lockY,lockH)
         if(LockXY==1)front.drawWireframe(true,false,false);//(lockX,lockY,lockH)
@@ -194,15 +189,16 @@ void ofApp::draw(){
             ofFill();
         ofSetColor(warpCol);
         
-    }else if(viewMode==1){
+    }else if(viewNum==1){
         side.drawControls(warpCol,warpCol);
         side.drawWireframe(false,false,true);
         
         ofSetColor(0,0,255,lineAlpha);
             ofNoFill();
                 ofSetLineWidth(1.0);
-                ofDrawRectangle(dW/3,dH/5,frontW,sideH);
+                ofDrawRectangle(dW/3,dH/3,frontW,sideH);
             ofFill();
+
         ofSetColor(warpCol);
     }
     
@@ -212,10 +208,15 @@ void ofApp::draw(){
     }
     gui2.draw();
 
-    ofDrawBitmapStringHighlight(view,20, dH/16*2);
-
+    ofDrawBitmapStringHighlight(name + "\n" + view,23, dH/16*1);
 }
 
+void ofApp::chairLoad(string path){
+    chair.clear();
+    chair.loadModel(path);//virtex10000
+    chair.setPosition(0,0,0);
+    chair.setScaleNormalization(false);
+}
 //--------------------------------------------------------------
 void ofApp::reMapMesh(){
     mesh = chair.getCurrentAnimatedMesh(0);
@@ -273,17 +274,19 @@ void ofApp::drawInfo(){
     info+="fps "+ofToString(ofGetFrameRate())+"\n";
     info+="size "+ofToString(mesh.getNumVertices())+"\n";
     info+="mouse "+ofToString(mouseX)+" _ "+ofToString(mouseY)+"\n";
-    info+="viewPoint"+ofToString(viewMode)+"\n";
+    
+    info+="viewPoint"+ofToString(viewNum)+"\n";
     info+="timer"+ofToString(time)+"\n";
     info+="nextCam"+ofToString(nextCam.x)+","+ofToString(nextCam.y)+","+ofToString(nextCam.z)+"\n";
     info+="Dist"+ofToString(ofDist(camX,camY,camZ,nextCam.x,nextCam.y,nextCam.z))+"\n";
+    
     info+="area0,"+ofToString(area0.x)+","+ofToString(area0.y)+"\n";
     info+="area1,"+ofToString(area1.x)+","+ofToString(area1.y)+"\n";
     info+="area2,"+ofToString(area2.x)+","+ofToString(area2.y)+"\n";
     info+="area3,"+ofToString(area3.x)+","+ofToString(area3.y);
     //    ofSetColor(200);
     ofDrawBitmapStringHighlight(info, dW/16*13, dH/16*12);
-
+    
 }
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
@@ -300,7 +303,7 @@ void ofApp::keyPressed(int key){
     }
 }
 //--------------------------------------------------------------
-void ofApp::saveXmlF(){
+void ofApp::saveXmlF(bool load){
     xmlF.clear();
     xmlF.addChild("points");
     xmlF.setTo("points");
@@ -315,8 +318,7 @@ void ofApp::saveXmlF(){
     
     xmlF.setToParent();
     xmlF.save("settingF.xml");
-    
-    loadXmlS();
+    if(load==true)loadXmlS();
 }
 //--------------------------------------------------------------
 void ofApp::saveXmlS(bool load){
@@ -396,40 +398,35 @@ void ofApp::loadXmlS(){
 //--------------------------------------------------------------
 void ofApp::mousePressed(int x,int y,int button){
 }
-
 //--------------------------------------------------------------
 void ofApp::mouseReleased(int x, int y, int button){
     reMapMesh();
 }
-
 //--------------------------------------------------------------
 void ofApp::windowResized(int w, int h){}
 
 //--------------------------------------------------------------
 void ofApp::viewButtonPressed(){
-    viewMode+=1;
-    if(viewMode>2)viewMode=0;
-    switch(viewMode){
+    viewNum+=1;
+    if(viewNum>2)viewNum=0;
+    switch(viewNum){
         case 1:{
-            view = " Warp Chair View \n";
-            view += " Right View";
-            saveXmlF();
-            camX = -1110;
+            view = "view Side";
+            saveXmlF(true);
+            camX = -1830;
             camY = 210;
             camZ = 30;
         }break;
             
         case 2:{
-            view = " Warp Chair View \n";
-            view += " Purse View";
+            view = "view Purse";
             saveXmlS(true);
             Ecam.setPosition(-960, 690, 930);
             Ecam.lookAt(chair.getPosition());
         }break;
             
         case 0:{
-            view = " Warp Chair View \n";
-            view += " Top View";
+            view = "view Top";
             camX = 0;
             camY = 1860;
             camZ = 0;
@@ -438,6 +435,51 @@ void ofApp::viewButtonPressed(){
     }
 }
 
+void ofApp::easingCam(){
+    viewNum=2;
+    
+    if(time-ltime>200){
+        nextCam = ofVec3f(ofRandom(-1500,1500),ofRandom(-1500,1500),ofRandom(-1500,1500));
+        easing = ofVec3f(ofRandom(0.006,0.08),ofRandom(0.006,0.08),ofRandom(0.006,0.08));
+        ltime=time;
+    }
+    
+    EcamX = EcamX+(nextCam.x-EcamX)*easing.x;
+    EcamY = EcamY+(nextCam.y-EcamY)*easing.y;
+    EcamZ = EcamZ+(nextCam.z-EcamZ)*easing.z;
+    
+    Ecam.setPosition(EcamX, EcamY, EcamZ);
+    Ecam.lookAt(ofVec3f(0));
+}
+
+void ofApp::modelPressed(){
+    modelNum+=1;
+    if(modelNum>4)modelNum=0;
+    switch(modelNum){
+            
+        case 1:{
+            name="model Thonet";
+            chairLoad("model/tnt/tnt.stl");
+        }break;
+        case 2:{
+            name="model Ant";
+            chairLoad("model/ant/ant.stl");
+        }break;
+        case 3:{
+            name = "model Panton";
+            chairLoad("model/ptn/ptn.stl");
+        }break;
+        case 4:{
+            name = "no Model";
+            chairLoad("model/simple/simple2.stl");
+        }break;
+        case 0:{
+            name = "mdoel Zigzag";
+            chairLoad("model/zig/zig.stl");
+        }break;
+    }
+    reMapMesh();
+}
 //--------------------------------------------------------------
 void ofApp::cornerLockXY(){
     LockXY+=1;
@@ -446,16 +488,45 @@ void ofApp::cornerLockXY(){
     side.reset();
     warpF.clear();
     warpS.clear();
+    saveXmlF(false);
+    saveXmlS(false);
     mesh = chair.getCurrentAnimatedMesh(0);
+}
+
+void ofApp::guiSetUp1(){
+    gui.setup();
+    gui.setPosition(dW/16,dH/16*4);
+    gui.add(lpX.setup("lightPX",-780,-1500,1500));
+    gui.add(lpY.setup("lightPY",950,-1500,1500));
+    gui.add(lpZ.setup("lightPZ",1300,-1500,1500));
+    gui.add(camX.setup("camPX",0,-3000,3000));
+    gui.add(camY.setup("camPY",1830,-3000,3000));
+    gui.add(camZ.setup("camPZ",1730,-3000,3000));
+    gui.add(warpCol.setup("warp",230,0,255));
+    gui.add(lineAlpha.setup("lineAlpha",70,0,255));
+    gui.add(ambient.setup("ambient",ofColor(0,53,53,255),ofColor(0),ofColor(255)));
+    gui.add(diffuse.setup("diffuse",ofColor(127,150,200,255),ofColor(0),ofColor(255)));
+    gui.add(bg.setup("background",ofColor(253,255,255),ofColor(0,0,0),ofColor(255,255,255)));
+}
+
+void ofApp::guiSetUp2(){
+    gui2.setup();
+    gui2.setPosition(20, dH/16*1.5);
+    gui2.add(modelButton.setup("Model"));
+    gui2.add(viewButton.setup("View"));
+    gui2.add(cornerLock.setup("CornerLock"));
+    gui2.add(saveButton.setup("Save"));
+    gui2.add(resetButton.setup("Reset"));
+    
+    //    gui2.add(Res.setup("Resolution",res,5,200));
+
 }
 
 //--------------------------------------------------------------
 void ofApp::resolution(int r){
     front.setup(frontW,frontH,ctrP,r,dW/3,dH/3);
     side.setup(sideW,sideH,ctrP,r,dW/3,dH/5);
-    
     glPointSize(ofMap(r, 5, 200, 5.0, 1.0));
-    
     res=r;
     mesh = chair.getCurrentAnimatedMesh(0);
 }
@@ -488,6 +559,9 @@ void ofApp::resetPressed(){
     side.reset();
     warpF.clear();
     warpS.clear();
+    saveXmlF(false);
+    saveXmlS(false);
+
     mesh = chair.getCurrentAnimatedMesh(0);
 }
 

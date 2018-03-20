@@ -1,6 +1,7 @@
 #pragma once
 #include "ofMain.h"
 #include "ofxGui.h"
+#include "ofxDatGui.h"
 #include "ofxAssimpModelLoader.h"
 #include "ofxBezierSurface.h"
 #include "ofxOsc.h"
@@ -20,18 +21,22 @@ public:
     void windowResized(int w, int h);
     void reMapMesh();
     void drawInfo();
-    void saveXmlF();
+    void saveXmlF(bool load);
     void saveXmlS(bool load);
     void loadXmlF();
     void loadXmlS();
     void exit();
     void viewButtonPressed();
+    void modelPressed();
     void cornerLockXY();
     void savePressed();
     void resetPressed();
-    void resolution(int r);//解像度の変更
+    void resolution(int r);
+    void guiSetUp1();
+    void guiSetUp2();
+    void chairLoad(string path);
+    void easingCam();
     
-
     ofxBezierSurface front,side;
     ofVboMesh mesh,warpF,warpS;
     ofxAssimpModelLoader chair,human;
@@ -42,27 +47,31 @@ public:
     ofVec3f nextCam,easing;
     ofXml xml,xmlS,xmlF;
     
-    int res = 150 ;//warpMeshSize
+    int res = 120 ;//warpMeshSize
     int ctrP = 5;//warpControlPoints
-    int frontW = 500,frontH = 500;//warpのサイズ550,halfは280
+    int frontW = 500,frontH = 500;//
+    
     int sideW = 500,sideH = 500;//sw550 sh780
 
-    ofVec2f area0,area1,area2,area3;
+    ofVec2f area0,area1,area2,area3,pMouse;
     
     int dW,dH,dD;//display size
-    int  viewMode = 0;
-    float wfx,wfy,wsy,wsz;//レスポンシブ用
-    string info,view;
+    int  viewNum = 0,modelNum = 0;
+    
+    float wfx,wfy,wsy,wsz;
+    string info,view,name;
     bool showGui=false;
     bool grid=false;
+    bool easingView = false;
     int LockXY = 0;//0=lockX,1=lockY
+    float EcamX=450,EcamY=630,EcamZ=960;
     ofxPanel gui,gui2;
     ofxIntSlider lpX,lpY,lpZ,warpCol,Res,lineAlpha;
     ofxFloatSlider camX,camY,camZ;
     ofxColorSlider ambient,diffuse,bg;
-    ofxButton viewButton,cornerLock,saveButton,resetButton;
+    ofxButton viewButton,cornerLock,saveButton,resetButton,modelButton;
     
-    int rY=-90,rX=-90,time;//rotateX/rotateY
+    int rY=-90,rX=-90,time,ltime;//rotateX/rotateY
     ofColor warpC=ofColor(210);
     
 };

@@ -550,8 +550,7 @@ dependencies: \
   ../../../libs/openFrameworks/video/ofVideoPlayer.h \
   ../../../libs/openFrameworks/video/ofAVFoundationPlayer.h \
   ../../../libs/openFrameworks/3d/ofCamera.h \
-  ../../../libs/openFrameworks/3d/ofEasyCam.h \
-  /Users/sakamotosenakira/Desktop/of_v0.9.8_osx_release/apps/master_03/chairSender/src/ofApp.h \
+  ../../../libs/openFrameworks/3d/ofEasyCam.h src/ofApp.h \
   /Users/sakamotosenakira/Desktop/of_v0.9.8_osx_release/addons/ofxGui/src/ofxGui.h \
   ../../../addons/ofxGui/src/ofxToggle.h \
   ../../../addons/ofxGui/src/ofxBaseGui.h \
@@ -561,6 +560,27 @@ dependencies: \
   ../../../addons/ofxGui/src/ofxButton.h \
   ../../../addons/ofxGui/src/ofxPanel.h \
   ../../../addons/ofxGui/src/ofxLabel.h \
+  /Users/sakamotosenakira/Desktop/of_v0.9.8_osx_release/addons/ofxDatGui/src/ofxDatGui.h \
+  /Users/sakamotosenakira/Desktop/of_v0.9.8_osx_release/apps/master_03/chairSender/../../../addons/ofxDatGui/src/components/ofxDatGuiGroups.h \
+  ../../../addons/ofxDatGui/src/components/ofxDatGuiLabel.h \
+  /Users/sakamotosenakira/Desktop/of_v0.9.8_osx_release/addons/ofxDatGui/src/core/ofxDatGuiComponent.h \
+  ../../../addons/ofxDatGui/src/core/ofxDatGuiIntObject.h \
+  /Users/sakamotosenakira/Desktop/of_v0.9.8_osx_release/apps/master_03/chairSender/../../../addons/ofxDatGui/src/themes/ofxDatGuiThemes.h \
+  ../../../addons/ofxDatGui/src/themes/ofxDatGuiTheme.h \
+  /Users/sakamotosenakira/Desktop/of_v0.9.8_osx_release/addons/ofxDatGui/src/libs/ofxSmartFont/ofxSmartFont.h \
+  ../../../addons/ofxDatGui/src/core/ofxDatGuiEvents.h \
+  ../../../addons/ofxDatGui/src/core/ofxDatGuiConstants.h \
+  ../../../addons/ofxDatGui/src/components/ofxDatGuiButton.h \
+  ../../../addons/ofxDatGui/src/components/ofxDatGuiSlider.h \
+  ../../../addons/ofxDatGui/src/components/ofxDatGuiTextInputField.h \
+  ../../../addons/ofxDatGui/src/components/ofxDatGuiTextInput.h \
+  ../../../addons/ofxDatGui/src/components/ofxDatGuiFRM.h \
+  ../../../addons/ofxDatGui/src/components/ofxDatGui2dPad.h \
+  ../../../addons/ofxDatGui/src/components/ofxDatGuiColorPicker.h \
+  ../../../addons/ofxDatGui/src/components/ofxDatGuiMatrix.h \
+  ../../../addons/ofxDatGui/src/components/ofxDatGuiTimeGraph.h \
+  ../../../addons/ofxDatGui/src/components/ofxDatGuiScrollView.h \
+  /Users/sakamotosenakira/Desktop/of_v0.9.8_osx_release/apps/master_03/chairSender/../../../addons/ofxDatGui/src/components/ofxDatGuiControls.h \
   /Users/sakamotosenakira/Desktop/of_v0.9.8_osx_release/addons/ofxAssimpModelLoader/src/ofxAssimpModelLoader.h \
   ../../../addons/ofxAssimpModelLoader/src/ofxAssimpMeshHelper.h \
   ../../../addons/ofxAssimpModelLoader/libs/assimp/include/assimp/cimport.h \

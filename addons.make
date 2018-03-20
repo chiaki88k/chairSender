@@ -1,5 +1,6 @@
 ofxAssimpModelLoader
 ofxBezierSurface
+ofxDatGui
 ofxGui
 ofxOsc
 ofxXmlSettings
